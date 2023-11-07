@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace JelaLingo.Service.Services.Users
 {
 
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IMapper _mapper;
         private readonly IRepository<User> _userRepository;

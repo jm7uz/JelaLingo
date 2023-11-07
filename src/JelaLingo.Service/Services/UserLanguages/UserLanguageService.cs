@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.UserLanguages;
 
-internal class UserLanguageService : IUserLanguageService
+public class UserLanguageService : IUserLanguageService
 {
     private readonly IMapper _mapper;
     private readonly IRepository<UserLanguage> _userLanguageRepository;

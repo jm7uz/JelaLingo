@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.Languages;
 
-internal class LanguageService : ILanguageService
+public class LanguageService : ILanguageService
 {
     private readonly IMapper _mapper;
     private readonly IRepository<Language> _languageRepository;

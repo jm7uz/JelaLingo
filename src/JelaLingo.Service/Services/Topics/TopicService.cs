@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.Topics;
 
-internal class TopicService : ITopicService
+public class TopicService : ITopicService
 {
     private readonly IMapper _mapper;
     private readonly IRepository<Topic> _topicRepository;
