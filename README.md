@@ -1,5 +1,4 @@
 
-```markdown
 # JelaLingo - Engage, Learn, Speak
 
 Welcome to JelaLingo, the interactive language learning platform where you can learn new languages through engaging conversations and the power of natural language processing (NLP). JelaLingo connects language learners with chatbots and each other, making learning a new tongue both fun and effective.
@@ -85,6 +84,6 @@ Project Link: [https://github.com/your_username_/JelaLingo](https://github.com/y
 - [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr)
 - [PostgreSQL](https://www.postgresql.org/)
 - [.NET](https://dotnet.microsoft.com/)
-```
+
 
 Be sure to fill in `jm7uz`, `Jaloliddin`, `@jm7uz`, and `jm7uzdev@gmail.com` with your actual GitHub username, full name, Twitter handle, and email address. Adjust any sections as needed to fit the specifics of your project's setup and documentation.
