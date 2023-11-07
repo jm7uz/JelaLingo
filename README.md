@@ -1,7 +1,8 @@
+![JelaLingo Logo](https://raw.githubusercontent.com/jm7uz/JelaLingo/master/jelalingo_logo.png)
 ```markdown
 # JelaLingo - Engage, Learn, Speak
 
-![JelaLingo Logo](https://raw.githubusercontent.com/jm7uz/JelaLingo/master/jelalingo_logo.png)
+
 
 
 
