@@ -1,7 +1,7 @@
 ```markdown
 # JelaLingo - Engage, Learn, Speak
 
-![JelaLingo Logo](https://github.com/jm7uz/JelaLingo/blob/master/jelalingo_logo.png?raw=true)
+![JelaLingo Logo](https://github.com/jm7uz/JelaLingo/blob/master/jelalingo_logo.png)
 
 Welcome to JelaLingo, the interactive language learning platform where you can learn new languages through engaging conversations and the power of natural language processing (NLP). JelaLingo connects language learners with chatbots and each other, making learning a new tongue both fun and effective.
 
