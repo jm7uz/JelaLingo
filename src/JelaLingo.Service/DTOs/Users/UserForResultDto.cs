@@ -1,6 +1,6 @@
 ﻿namespace JelaLingo.Service.DTOs.Users;
 
-internal class UserForResultDto
+public class UserForResultDto
 {
     public long Id { get; set; }
     public string FirstName { get; set; }

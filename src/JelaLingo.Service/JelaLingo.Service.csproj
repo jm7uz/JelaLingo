@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\" />
-    <Folder Include="Services\" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JelaLingo.Data\JelaLingo.Data.csproj" />
+    <ProjectReference Include="..\JelaLingo.Domain\JelaLingo.Domain.csproj" />
   </ItemGroup>
 
 </Project>

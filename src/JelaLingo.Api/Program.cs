@@ -1,3 +1,6 @@
+using JelaLingo.Data.DbContexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace JelaLingo.Api
 {
     public class Program
@@ -7,6 +10,10 @@ namespace JelaLingo.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<JelalingoDbContext>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

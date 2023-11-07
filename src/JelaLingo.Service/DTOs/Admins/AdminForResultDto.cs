@@ -1,12 +1,10 @@
-﻿using JelaLingo.Domain.Commons;
+﻿namespace JelaLingo.Service.DTOs.Admins;
 
-namespace JelaLingo.Domain.Entities;
-
-public class Admin : Auditable
+public class AdminForResultDto
 {
+    public long Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public string Password { get; set; }
     public string Email { get; set; }
     public string Role { get; set; }
 }

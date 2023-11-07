@@ -1,5 +1,4 @@
-﻿
-using JelaLingo.Domain.Commons;
+﻿using JelaLingo.Domain.Commons;
 
 namespace JelaLingo.Data.IRepositories;
 
