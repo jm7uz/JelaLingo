@@ -2,7 +2,7 @@
 
 namespace JelaLingo.Service.Interfaces.Admins;
 
-public interface IAuthService
+public interface IAdminAuthService
 {
     Task<LoginResultDto> AuthenticateAsync(string email, string password);
 }

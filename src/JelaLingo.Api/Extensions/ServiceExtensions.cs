@@ -26,6 +26,8 @@ namespace JelaLingo.Api.Extensions
     {
         public static void AddCustomServices(this IServiceCollection services)
         {
+            services.AddScoped<IUserAuthService, UserAuthService>();
+            services.AddScoped<IAdminAuthService, AdminAuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITopicService, TopicService>();
             services.AddScoped<IAdminService, AdminService>();
@@ -41,7 +43,7 @@ namespace JelaLingo.Api.Extensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Teydes.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Jelalingo.Api", Version = "v1" });
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -79,7 +81,7 @@ namespace JelaLingo.Api.Extensions
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
-                var Key = Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]);
+                var Key = Encoding.UTF8.GetBytes(configuration["JWT:Key"]);
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {

@@ -5,6 +5,7 @@ using JelaLingo.Data.DbContexts;
 using JelaLingo.Service.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,18 @@ builder.Services.AddSwaggerGen();
 
 // JWT service
 builder.Services.AddJwtService(builder.Configuration);
+
+//Swager
+builder.Services.AddSwaggerService();
+
+// Logger
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 builder.Services.AddCustomServices();
 builder.Services.AddAutoMapper(typeof(MapperProfile));

@@ -1,8 +1,7 @@
 ﻿using JelaLingo.Shared.Helpers;
-using JelaLingo.Domain.Entities;
 using JelaLingo.Service.Exceptions;
 using JelaLingo.Service.DTOs.Logins;
-using JelaLingo.Service.Interfaces.Users;
+using JelaLingo.Service.Interfaces.Admins;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,33 +9,35 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
 using JelaLingo.Service.DTOs.Users;
+using JelaLingo.Service.DTOs.Admins;
+using JelaLingo.Domain.Entities;
 
-namespace JelaLingo.Service.Services.Users;
+namespace JelaLingo.Service.Services.Admins;
 
-public class AuthService : IAuthService
+public class AdminAuthService : IAdminAuthService
 {
-    private readonly IUserService _userService;
+    private readonly IAdminService _adminService;
     private readonly IConfiguration _configuration;
 
-    public AuthService(IUserService userService, IConfiguration configuration)
+    public AdminAuthService(IAdminService adminService, IConfiguration configuration)
     {
-        _userService = userService;
+        _adminService = adminService;
         _configuration = configuration;
     }
     public async Task<LoginResultDto> AuthenticateAsync(string email, string password)
     {
-        var user = await _userService.RetrieveByEmailAsync(email);
-        if (user == null || !PasswordHelper.Verify(password, user.Password))
+        var admin = await _adminService.RetrieveByEmailAsync(email);
+        if (admin == null || !PasswordHelper.Verify(password, admin.Password))
             throw new JelalingoException(400, "Email or password is incorrect");
 
 
         return new LoginResultDto
         {
-            Token = GenerateToken(user)
+            Token = GenerateToken(admin)
         };
     }
 
-    private string GenerateToken(UserForResultDto user)
+    private string GenerateToken(AdminForResultDto admin)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
@@ -44,8 +45,8 @@ public class AuthService : IAuthService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                 new Claim("Id", user.Id.ToString()),
-                 new Claim(ClaimTypes.Name, user.FirstName)
+                 new Claim("Id", admin.Id.ToString()),
+                 new Claim(ClaimTypes.Name, admin.FirstName)
             }),
             Audience = _configuration["JWT:Audience"],
             Issuer = _configuration["JWT:Issuer"],
