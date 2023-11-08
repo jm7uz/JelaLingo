@@ -1,21 +1,16 @@
 ﻿using JelaLingo.Service.Configurations;
 using JelaLingo.Service.DTOs.Admins;
-using JelaLingo.Service.DTOs.Users;
 using JelaLingo.Service.Interfaces.Admins;
-using JelaLingo.Service.Interfaces.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JelaLingo.Api.Controllers.Admins;
 
-public class UsersController : BaseController
+public class AdminController : BaseController
 {
     private readonly IAdminService _adminService;
-    private readonly IConfiguration _configuration;
-    public UsersController(IAdminService adminService, IConfiguration configuration)
+    public AdminController(IAdminService adminService)
     {
         _adminService = adminService;
-        _configuration = configuration;
     }
 
     [HttpPost]

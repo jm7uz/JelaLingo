@@ -1,7 +1,6 @@
 ﻿using JelaLingo.Service.Configurations;
 using JelaLingo.Service.DTOs.Users;
 using JelaLingo.Service.Interfaces.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JelaLingo.Api.Controllers.Users;
@@ -9,11 +8,9 @@ namespace JelaLingo.Api.Controllers.Users;
 public class UsersController : BaseController
 {
     private readonly IUserService _userService;
-    private readonly IConfiguration _configuration;
-    public UsersController(IUserService userService, IConfiguration configuration)
+    public UsersController(IUserService userService)
     {
         _userService = userService;
-        _configuration = configuration;
     }
 
     [HttpPost]

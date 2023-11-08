@@ -6,6 +6,7 @@ using JelaLingo.Service.DTOs.Users;
 using JelaLingo.Service.Exceptions;
 using JelaLingo.Service.Extensions;
 using JelaLingo.Service.Interfaces.Users;
+using JelaLingo.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.Users
@@ -32,6 +33,7 @@ namespace JelaLingo.Service.Services.Users
                 throw new JelalingoException(409, "User is alredy exists");
             
             var mappedUser = _mapper.Map<User>(dto);
+            mappedUser.Password = PasswordHelper.Hash(dto.Password);
             mappedUser.CreatedAt = DateTime.UtcNow;
 
             var createdUser = await _userRepository.InsertAsync(mappedUser);
@@ -69,14 +71,17 @@ namespace JelaLingo.Service.Services.Users
 
         public async Task<IEnumerable<UserForResultDto>> RetrieveAllAsync(PaginationParams @params)
         {
-            var pagedUsers = await _userRepository.SelectAll()
-                .AsNoTracking()
-                .OrderBy(u => u.Id)
-                .ToPagedList(@params)
+            var query = _userRepository.SelectAll()
+                .AsNoTracking();
+
+            var pagedUsers = await query
+                .Skip((@params.PageIndex - 1) * @params.PageSize)
+                .Take(@params.PageSize)
                 .ToListAsync();
 
             return _mapper.Map<IEnumerable<UserForResultDto>>(pagedUsers);
         }
+
 
         public async Task<UserForResultDto> RetrieveByEmailAsync(string email)
         {

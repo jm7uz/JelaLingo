@@ -38,11 +38,13 @@ public class TopicService : ITopicService
 
     public async Task<IEnumerable<TopicForResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var pagedTopics = await _topicRepository.SelectAll()
-            .AsNoTracking()
-            .OrderBy(t => t.Id)
-            .ToPagedList(@params)
-            .ToListAsync();
+        var query = _topicRepository.SelectAll()
+                .AsNoTracking();
+
+        var pagedTopics = await query
+                .Skip((@params.PageIndex - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToListAsync();
 
         return _mapper.Map<IEnumerable<TopicForResultDto>>(pagedTopics);
     }

@@ -39,11 +39,13 @@ public class CourseService : ICourseService
 
     public async Task<IEnumerable<CourseForResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var courses = await _courseRepository.SelectAll()
-            .AsNoTracking()
-            .OrderBy(c => c.Id)
-            .ToPagedList(@params)
-            .ToListAsync();
+        var query = _courseRepository.SelectAll()
+                .AsNoTracking();
+
+        var courses = await query
+                .Skip((@params.PageIndex - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToListAsync();
 
         return _mapper.Map<IEnumerable<CourseForResultDto>>(courses);
     }

@@ -1,8 +1,10 @@
+using JelaLingo.Api.Models;
 using JelaLingo.Api.Extensions;
 using JelaLingo.Api.Middlewares;
 using JelaLingo.Data.DbContexts;
 using JelaLingo.Service.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// JWT service
+builder.Services.AddJwtService(builder.Configuration);
+
 builder.Services.AddCustomServices();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
+//Configure api url name
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new RouteTokenTransformerConvention(
+        new ConfigurationApiUrlName()));
+});
 
 var app = builder.Build();
 

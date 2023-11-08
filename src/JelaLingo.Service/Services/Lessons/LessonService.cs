@@ -6,6 +6,7 @@ using JelaLingo.Service.DTOs.Lessons;
 using JelaLingo.Service.Exceptions;
 using JelaLingo.Service.Extensions;
 using JelaLingo.Service.Interfaces.Lessons;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.Lessons;
@@ -24,7 +25,7 @@ public class LessonService : ILessonService
     public async Task<LessonForResultDto> AddAsync(LessonForCreationDto dto)
     {
         var lessons = await _lessonRepository.SelectAll()
-            .Where(l => l.Title.ToLower() == dto.Title.ToLower())
+            .Where(l => l.TopicId == dto.TopicId)
             .FirstOrDefaultAsync();
         if (lessons is not null)
             throw new JelalingoException(409, "Course is alredy exists");
@@ -38,11 +39,13 @@ public class LessonService : ILessonService
 
     public async Task<IEnumerable<LessonForResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var lessons = await _lessonRepository.SelectAll()
-            .AsNoTracking()
-            .OrderBy(l => l.Id)
-            .ToPagedList(@params)
-            .ToListAsync();
+        var query = _lessonRepository.SelectAll()
+                .AsNoTracking();
+
+        var lessons = await query
+                .Skip((@params.PageIndex - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToListAsync();
 
         return _mapper.Map<IEnumerable<LessonForResultDto>>(lessons);
     }
@@ -86,10 +89,28 @@ public class LessonService : ILessonService
 
         return true;
     }
-
     public async Task<IEnumerable<LessonForResultDto>> GetAllAsync()
     {
         var lessons = await _lessonRepository.SelectAll().ToListAsync();
         return _mapper.Map<IEnumerable<LessonForResultDto>>(lessons);
+    }
+
+    public async Task<string> SaveVideoFileAsync(IFormFile videoFile)
+    {
+        var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "videos");
+
+        if (!Directory.Exists(uploadsFolderPath))
+        {
+            Directory.CreateDirectory(uploadsFolderPath);
+        }
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(videoFile.FileName);
+        var filePath = Path.Combine(uploadsFolderPath, fileName);
+
+        await using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await videoFile.CopyToAsync(stream);
+        }
+
+        return Path.Combine("videos", fileName);
     }
 }

@@ -7,6 +7,7 @@ using JelaLingo.Service.DTOs.Users;
 using JelaLingo.Service.Exceptions;
 using JelaLingo.Service.Extensions;
 using JelaLingo.Service.Interfaces.Admins;
+using JelaLingo.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace JelaLingo.Service.Services.Admins;
@@ -30,6 +31,7 @@ public class AdminService : IAdminService
             throw new JelalingoException(409, "User is alredy exists");
 
         var mappedAdmin = _mapper.Map<Admin>(dto);
+        mappedAdmin.Password = PasswordHelper.Hash(dto.Password);
         mappedAdmin.CreatedAt = DateTime.UtcNow;
 
         var createdAdmin = await _adminRepository.InsertAsync(mappedAdmin);
@@ -67,11 +69,13 @@ public class AdminService : IAdminService
 
     public async Task<IEnumerable<AdminForResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var pagedAdmins = await _adminRepository.SelectAll()
-                .AsNoTracking()
-                .OrderBy(a => a.Id)
-                .ToPagedList(@params)
-                .ToListAsync();
+        var query = _adminRepository.SelectAll()
+            .AsNoTracking();
+
+        var pagedAdmins = await query
+            .Skip((@params.PageIndex - 1) * @params.PageSize)
+            .Take(@params.PageSize)
+            .ToListAsync();
 
         return _mapper.Map<IEnumerable<AdminForResultDto>>(pagedAdmins);
     }

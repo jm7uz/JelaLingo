@@ -38,11 +38,13 @@ public class LanguageService : ILanguageService
 
     public async Task<IEnumerable<LanguageForResultDto>> RetrieveAllAsync(PaginationParams @params)
     {
-        var pagedLanguages = await _languageRepository.SelectAll()
-            .AsNoTracking()
-            .OrderBy(l => l.Id)
-            .ToPagedList(@params)
-            .ToListAsync();
+        var query = _languageRepository.SelectAll()
+                .AsNoTracking();
+
+        var pagedLanguages = await query
+                .Skip((@params.PageIndex - 1) * @params.PageSize)
+                .Take(@params.PageSize)
+                .ToListAsync();
 
         return _mapper.Map<IEnumerable<LanguageForResultDto>>(pagedLanguages);
     }
